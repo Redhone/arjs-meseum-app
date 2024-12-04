@@ -37,7 +37,6 @@
                 raycaster="objects: .clickable"
                 emitevents="true"
                 cursor="fuse: false; rayOrigin: mouse;"
-                id="markerA"
             >
                 <a-entity
                     id="bowser-model"
@@ -53,17 +52,32 @@
         </a-scene>
 
         <script>
-            // Get the model entity
-            const modelEntity = document.querySelector("#bowser-model");
+            // Wait for the scene to load
+            window.onload = () => {
+                // Get the model entity
+                const modelEntity = document.querySelector("#bowser-model");
 
-            // Define the alternate model URL
-            const alternateModel = "#alternate-asset";
+                // Define models
+                const alternateModel = "#alternate-asset";
+                const originalModel = "#animated-asset";
 
-            // Add event listener for double-click
-            modelEntity.addEventListener("dblclick", () => {
-                // Replace the model
-                modelEntity.setAttribute("gltf-model", alternateModel);
-            });
+                // Toggle state
+                let isAlternateModel = false;
+
+                // Listen for gestures
+                modelEntity.addEventListener("gesture-doubletap", () => {
+                    // Replace the model on double-tap gesture
+                    const newModel = isAlternateModel ? originalModel : alternateModel;
+                    modelEntity.setAttribute("gltf-model", newModel);
+
+                    // Toggle the model state
+                    isAlternateModel = !isAlternateModel;
+
+                    console.log(`Switched to model: ${newModel}`);
+                });
+
+                console.log("Double-tap gesture listener added to the model.");
+            };
         </script>
     </body>
 </html>
